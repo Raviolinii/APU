@@ -1,0 +1,211 @@
+Version: 2.0
+Alternatives: &alternatives
+    Huawei P60 Pro 8:
+        Wyswietlacz: 6.67
+        Pamiec_RAM: 8
+        Pamiec_wbudowana: 256
+        Aparat_foto: 48
+        Cena: -5499
+    Huawei nova Y61 4:
+        Wyswietlacz: 6.52
+        Pamiec_RAM: 4
+        Pamiec_wbudowana: 64
+        Aparat_foto: 50
+        Cena: -699
+    Huawei Nova 11i 8:
+        Wyswietlacz: 6.8
+        Pamiec_RAM: 8
+        Pamiec_wbudowana: 128
+        Aparat_foto: 48
+        Cena: -1099
+    Huawei Nova 9 SE 8:
+        Wyswietlacz: 6.78
+        Pamiec_RAM: 8
+        Pamiec_wbudowana: 128
+        Aparat_foto: 108
+        Cena: -1299
+    Huawei Nova 9 8:
+        Wyswietlacz: 6.57
+        Pamiec_RAM: 8
+        Pamiec_wbudowana: 128
+        Aparat_foto: 50
+        Cena: -1499
+    Huawei Nova Y91 6:
+        Wyswietlacz: 6.95
+        Pamiec_RAM: 8
+        Pamiec_wbudowana: 128
+        Aparat_foto: 50
+        Cena: -1499
+    Huawei Nova 11 Pro 8:
+        Wyswietlacz: 6.78
+        Pamiec_RAM: 8
+        Pamiec_wbudowana: 256
+        Aparat_foto: 50
+        Cena: -2849
+    Huawei nova 10:
+        Wyswietlacz: 6.67
+        Pamiec_RAM: 8
+        Pamiec_wbudowana: 128
+        Aparat_foto: 50
+        Cena: -1799
+    Huawei Nova 11 8:
+        Wyswietlacz: 6.7
+        Pamiec_RAM: 8
+        Pamiec_wbudowana: 256
+        Aparat_foto: 50
+        Cena: -2599
+    Huawei Nova Y70 4:
+        Wyswietlacz: 6.75
+        Pamiec_RAM: 4
+        Pamiec_wbudowana: 128
+        Aparat_foto: 48
+        Cena: -839
+    Huawei P50 Pro 8:
+        Wyswietlacz: 6.6
+        Pamiec_RAM: 8
+        Pamiec_wbudowana: 256
+        Aparat_foto: 50
+        Cena: -4499
+    Huawei Y5p:
+        Wyswietlacz: 5.45
+        Pamiec_RAM: 2
+        Pamiec_wbudowana: 32
+        Aparat_foto: 8
+        Cena: -299
+    Huawei Y6p:
+        Wyswietlacz: 6.3
+        Pamiec_RAM: 3
+        Pamiec_wbudowana: 64
+        Aparat_foto: 13
+        Cena: -299
+    Huawei P40 Lite E 4:
+        Wyswietlacz: 6.39
+        Pamiec_RAM: 4
+        Pamiec_wbudowana: 64
+        Aparat_foto: 48
+        Cena: -499
+    Huawei P smart 2021 4:
+        Wyswietlacz: 6.67
+        Pamiec_RAM: 4
+        Pamiec_wbudowana: 128
+        Aparat_foto: 48
+        Cena: -599
+Goal:
+    name: Buy phone
+    description: Smartphone buying problem
+    author: unknown
+    preferences:
+        pairwise:
+              - [Wydajnosc, Jakosc, 3]
+              - [Wydajnosc, Cena, 2]
+              - [Wydajnosc, Styl, 4]
+              - [Jakosc, Cena, 1/2]
+              - [Jakosc, Styl, 3]
+              - [Cena, Styl, 6]
+    children:
+        Wydajnosc:
+            preferences:
+                pairwiseFunction: >
+                    wydajn <- function(a1, a2){
+                            if(a1$Pamiec_RAM == a2$Pamiec_RAM) return (1)
+                            if(a1$Pamiec_RAM < a2$Pamiec_RAM) return(1/wydajn(a2, a1))
+                            percDif <- (a1$Pamiec_RAM - a2$Pamiec_RAM) / a1$Pamiec_RAM * 100
+                            if (percDif < 10) return (2)
+                            if (percDif < 25) return (3)
+                            if (percDif < 35) return (4)
+                            if (percDif < 55) return (5)
+                            if (percDif < 75) return (6)
+                            if (percDif < 85) return (7)
+                            return (8)
+                        }
+            children: *alternatives
+        Jakosc:
+            preferences:
+                pairwise:
+                  - [Pamiec_RAM, Pamiec_wbudowana, 2]
+            children:
+                Pamiec_RAM:
+                    preferences:
+                        pairwiseFunction: >
+                            ram <- function(a1, a2){
+                                    if(a1$Pamiec_RAM == a2$Pamiec_RAM) return (1)
+                                    if(a1$Pamiec_RAM < a2$Pamiec_RAM) return(1/ram(a2, a1))
+                                    percDif <- (a1$Pamiec_RAM - a2$Pamiec_RAM) / a1$Pamiec_RAM * 100
+                                    if (percDif < 10) return (2)
+                                    if (percDif < 25) return (3)
+                                    if (percDif < 35) return (4)
+                                    if (percDif < 55) return (5)
+                                    if (percDif < 75) return (6)
+                                    if (percDif < 85) return (7)
+                                    return (8)
+                                }
+                    children: *alternatives
+                Pamiec_wbudowana:
+                    preferences:
+                        pairwiseFunction: >
+                            wbud <- function(a1, a2){
+                                if(a1$Pamiec_wbudowana == a2$Pamiec_wbudowana) return (1)
+                                if(a1$Pamiec_wbudowana < a2$Pamiec_wbudowana) return(1/wbud(a2, a1))
+                                percDif <- (a1$Pamiec_wbudowana - a2$Pamiec_wbudowana) / a1$Pamiec_wbudowana * 100
+                                if (percDif < 10) return (2)
+                                if (percDif < 25) return (3)
+                                if (percDif < 35) return (4)
+                                if (percDif < 55) return (5)
+                                if (percDif < 75) return (6)
+                                if (percDif < 85) return (7)
+                                return (8)
+                            }
+                    children: *alternatives
+        Cena:
+            preferences:
+                pairwiseFunction: >
+                    ceny <- function(a1, a2){
+                        if(a1$Cena < a2$Cena) return(1/ceny(a2, a1))
+                        percDif <- a1$Cena / a2$Cena
+                        percDif <- (a1$Cena - a2$Cena) / a1$Cena * 100
+                        if (percDif < 10) return (2)
+                        if (percDif < 25) return (3)
+                        if (percDif < 35) return (4)
+                        if (percDif < 55) return (5)
+                        if (percDif < 75) return (6)
+                        if (percDif < 85) return (7)
+                        return (8)
+                    }
+            children: *alternatives
+        Styl:
+            preferences:
+                pairwise:
+                  - [Wyswietlacz, Aparat_foto, 2]
+            children:
+                Wyswietlacz:
+                    preferences:
+                        pairwiseFunction: >
+                            wysw <- function(a1, a2){
+                                if(a1$Wyswietlacz == a2$Wyswietlacz) return (1)
+                                if(a1$Wyswietlacz < a2$Wyswietlacz) return(1/wysw(a2, a1))
+                                percDif <- (a1$Wyswietlacz - a2$Wyswietlacz) / a1$Wyswietlacz * 100
+                                if (percDif < 10) return (2)
+                                if (percDif < 25) return (3)
+                                if (percDif < 35) return (4)
+                                if (percDif < 55) return (5)
+                                if (percDif < 75) return (6)
+                                if (percDif < 85) return (7)
+                                return (8)
+                            }
+                    children: *alternatives
+                Aparat_foto:
+                    preferences:
+                        pairwiseFunction: >
+                            apar <- function(a1, a2){
+                                if(a1$Aparat_foto == a2$Aparat_foto) return (1)
+                                if(a1$Aparat_foto < a2$Aparat_foto) return(1/apar(a2, a1))
+                                percDif <- (a1$Aparat_foto - a2$Aparat_foto) / a1$Aparat_foto * 100
+                                if (percDif < 10) return (2)
+                                if (percDif < 25) return (3)
+                                if (percDif < 35) return (4)
+                                if (percDif < 55) return (5)
+                                if (percDif < 75) return (6)
+                                if (percDif < 85) return (7)
+                                return (8)
+                            }
+                    children: *alternatives
